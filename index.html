@@ -22,6 +22,26 @@
             align-items: center;
             min-height: 100vh;
         }
+        /* --- Nuovo codice per la foto --- */
+.profile-pic {
+  /* 1. Dimensioni: decidi quanto deve essere grande (es. 120px) */
+  width: 120px;
+  height: 120px; /* Mantieni altezza e larghezza uguali per un cerchio perfetto */
+  
+  /* 2. Il Segreto per farla Tonda */
+  border-radius: 50%;  /* Smussa gli angoli al 50%, creando un cerchio */
+  
+  /* 3. Gestione foto non quadrate */
+  object-fit: cover; /* Se la foto originale è rettangolare, la taglia al centro senza schiacciarla */
+  
+  /* 4. Spaziatura */
+  margin-bottom: 1.5rem; /* Aggiunge spazio tra la foto e il tuo nome */
+  
+  /* (Opzionale) Un leggero bordo o ombra per staccarla dallo sfondo */
+  border: 3px solid #0056b3; /* Usa il colore 'accent' che avevamo definito */; 
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+/* ---------------------------------- */
         .container {
             max-width: 600px;
             width: 90%;
@@ -78,7 +98,7 @@
 <body>
 
 <div class="container">
-    <img src="Lorenzo-Zantedeschi-profile.jpg">
+    <img src="Lorenzo-Zantedeschi-profile.jpg" alt="Lorenzo Zantedeschi" class="profile-pic">
     <h1>Lorenzo Zantedeschi</h1>
     <p class="subtitle">Scrivo di tennis, racconto storie.</p>
 
