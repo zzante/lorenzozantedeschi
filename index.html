@@ -520,13 +520,11 @@
 
   const systemDark = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-  function effectiveTheme() {
-    const stored = localStorage.getItem('lz-theme');
-    if (stored === 'dark' || stored === 'light') return stored;
-    return systemDark() ? 'dark' : 'light';
-  }
+  // Current active theme (session only, not persisted)
+  let currentTheme = systemDark() ? 'dark' : 'light';
 
   function applyTheme(theme) {
+    currentTheme = theme;
     html.setAttribute('data-theme', theme);
     if (theme === 'dark') {
       icon.textContent  = '☀️';
@@ -537,19 +535,17 @@
     }
   }
 
-  // Init on load
-  applyTheme(effectiveTheme());
+  // Init on load — always follow system
+  applyTheme(currentTheme);
 
-  // Manual toggle
+  // Manual toggle (session only, no localStorage)
   btn.addEventListener('click', () => {
-    const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('lz-theme', next);
-    applyTheme(next);
+    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
   });
 
-  // Sync when system preference changes (only if user hasn't overridden)
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    if (!localStorage.getItem('lz-theme')) applyTheme(effectiveTheme());
+  // Always sync when system preference changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    applyTheme(e.matches ? 'dark' : 'light');
   });
 </script>
 
