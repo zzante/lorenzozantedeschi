@@ -439,6 +439,59 @@
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
+    /* ── Meteo card ── */
+.meteo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.meteo-slot {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 6px;
+  text-align: center;
+}
+
+.meteo-slot-hour {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.meteo-slot-icon { font-size: 22px; line-height: 1; margin-bottom: 4px; }
+
+.meteo-slot-temp {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.meteo-slot-rain {
+  font-size: 10px;
+  color: #5b8dd9;
+  margin-top: 2px;
+}
+
+.meteo-loading {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  padding: 8px 0;
+}
+
+.meteo-summary {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 10px;
+  text-align: center;
+}
   </style>
 </head>
 <body>
@@ -719,6 +772,66 @@
 
     caricaMessaggi();
     setInterval(caricaMessaggi, 30000); // aggiorna ogni 30s
+
+    // ── Meteo Open-Meteo ──
+const WMO_ICONS = {
+  0:'☀️', 1:'🌤', 2:'⛅', 3:'☁️',
+  45:'🌫', 48:'🌫',
+  51:'🌦', 53:'🌦', 55:'🌧',
+  61:'🌧', 63:'🌧', 65:'🌧',
+  71:'🌨', 73:'🌨', 75:'🌨',
+  80:'🌦', 81:'🌧', 82:'⛈',
+  95:'⛈', 96:'⛈', 99:'⛈'
+};
+
+async function caricaMeteo() {
+  try {
+    const url = 'https://api.open-meteo.com/v1/forecast' +
+      '?latitude=45.5154&longitude=10.9002' +
+      '&hourly=temperature_2m,precipitation_probability,weathercode' +
+      '&timezone=Europe%2FRome' +
+      '&start_date=2026-04-18&end_date=2026-04-18';
+
+    const res  = await fetch(url);
+    const data = await res.json();
+
+    const hours = data.hourly.time;
+    const temps = data.hourly.temperature_2m;
+    const precs = data.hourly.precipitation_probability;
+    const codes = data.hourly.weathercode;
+
+    const fascia = [12, 14, 16, 18];
+    let slots = '';
+
+    fascia.forEach(i => {
+      const h    = hours[i].split('T')[1].slice(0,5);
+      const icon = WMO_ICONS[codes[i]] || '🌡';
+      const temp = Math.round(temps[i]);
+      const rain = precs[i];
+      slots += `
+        <div class="meteo-slot">
+          <div class="meteo-slot-hour">${h}</div>
+          <div class="meteo-slot-icon">${icon}</div>
+          <div class="meteo-slot-temp">${temp}°</div>
+          <div class="meteo-slot-rain">${rain}% 💧</div>
+        </div>`;
+    });
+
+    const tempsF = fascia.map(i => Math.round(temps[i]));
+    const rainMax = Math.max(...fascia.map(i => precs[i]));
+    const summary = `Media ${Math.round(tempsF.reduce((a,b)=>a+b)/tempsF.length)}° · Prob. pioggia max ${rainMax}%`;
+
+    document.getElementById('meteo-content').innerHTML =
+      `<div class="meteo-grid">${slots}</div>
+       <div class="meteo-summary">${summary}</div>`;
+
+  } catch(e) {
+    document.getElementById('meteo-content').innerHTML =
+      '<div class="meteo-loading">Previsioni non disponibili al momento.</div>';
+  }
+}
+
+caricaMeteo();
   </script>
 
 </body>
