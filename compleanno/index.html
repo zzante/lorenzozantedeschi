@@ -567,7 +567,7 @@
       <div class="info-card" id="meteo-card">
         <div class="info-icon">🌤</div>
         <div class="info-body" style="width:100%">
-          <div class="info-title">Meteo · 18 Aprile · 12–19</div>
+          <div class="info-title">Meteo</div>
           <div id="meteo-content"><div class="meteo-loading">Caricamento previsioni…</div></div>
         </div>
       </div>
@@ -795,35 +795,35 @@ async function caricaMeteo() {
     const res  = await fetch(url);
     const data = await res.json();
 
-    const hours = data.hourly.time;
     const temps = data.hourly.temperature_2m;
     const precs = data.hourly.precipitation_probability;
     const codes = data.hourly.weathercode;
 
-    const fascia = [12, 14, 16, 18];
-    let slots = '';
+    // Fascia 12–19
+    const fascia = [12, 13, 14, 15, 16, 17, 18, 19];
 
-    fascia.forEach(i => {
-      const h    = hours[i].split('T')[1].slice(0,5);
-      const icon = WMO_ICONS[codes[i]] || '🌡';
-      const temp = Math.round(temps[i]);
-      const rain = precs[i];
-      slots += `
-        <div class="meteo-slot">
-          <div class="meteo-slot-hour">${h}</div>
-          <div class="meteo-slot-icon">${icon}</div>
-          <div class="meteo-slot-temp">${temp}°</div>
-          <div class="meteo-slot-rain">${rain}% 💧</div>
-        </div>`;
-    });
-
-    const tempsF = fascia.map(i => Math.round(temps[i]));
+    const tempMin = Math.round(Math.min(...fascia.map(i => temps[i])));
+    const tempMax = Math.round(Math.max(...fascia.map(i => temps[i])));
     const rainMax = Math.max(...fascia.map(i => precs[i]));
-    const summary = `Media ${Math.round(tempsF.reduce((a,b)=>a+b)/tempsF.length)}° · Prob. pioggia max ${rainMax}%`;
 
-    document.getElementById('meteo-content').innerHTML =
-      `<div class="meteo-grid">${slots}</div>
-       <div class="meteo-summary">${summary}</div>`;
+    // Codice meteo più frequente nella fascia
+    const codeFreq = {};
+    fascia.forEach(i => { codeFreq[codes[i]] = (codeFreq[codes[i]] || 0) + 1; });
+    const dominantCode = Object.entries(codeFreq).sort((a,b) => b[1]-a[1])[0][0];
+    const icon = WMO_ICONS[dominantCode] || '🌡';
+
+    document.getElementById('meteo-content').innerHTML = `
+      <div style="display:flex; align-items:center; gap:14px; margin-top:8px;">
+        <div style="font-size:42px; line-height:1;">${icon}</div>
+        <div>
+          <div style="font-family:'Playfair Display',serif; font-weight:700; font-size:20px; color:var(--text);">
+            ${tempMin}°–${tempMax}°
+          </div>
+          <div style="font-size:12px; color:var(--muted); margin-top:3px;">
+            Prob. pioggia max ${rainMax}% · fascia 12–19
+          </div>
+        </div>
+      </div>`;
 
   } catch(e) {
     document.getElementById('meteo-content').innerHTML =
