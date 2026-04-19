@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Lorenzo compie 30 anni 🎉</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --sun:      #FFD600;
+      --orange:   #FF6B2B;
+      --red:      #C0392B;
+      --cream:    #FDF6EC;
+      --dark:     #1C1008;
+      --card:     #ffffff;
+      --border:   #F0E0C8;
+      --muted:    #A08060;
+      --text:     #2C1A08;
+      --shadow:   0 4px 24px rgba(200,100,0,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Grain texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      background: var(--dark);
+      color: var(--cream);
+      text-align: center;
+      padding: 56px 24px 48px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 120%, rgba(255,107,43,0.35) 0%, transparent 70%),
+                  radial-gradient(ellipse at 80% -20%, rgba(255,214,0,0.2) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-age {
+      position: relative;
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(96px, 28vw, 160px);
+      line-height: 0.9;
+      color: var(--sun);
+      letter-spacing: -4px;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .hero-label {
+      position: relative;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(18px, 5vw, 26px);
+      color: var(--orange);
+      margin-top: 8px;
+      margin-bottom: 20px;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+
+    .hero-name {
+      position: relative;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(253,246,236,0.5);
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    /* Confetti dots */
+    .confetti {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      animation: float linear infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes float {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+      100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ── Countdown ── */
+    .countdown-wrap {
+      position: relative;
+      z-index: 1;
+      background: var(--orange);
+      color: white;
+      text-align: center;
+      padding: 20px 24px;
+    }
+
+    .countdown-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-bottom: 8px;
+    }
+
+    .countdown-numbers {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .cd-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .cd-num {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .cd-lbl {
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .cd-sep {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      opacity: 0.4;
+      align-self: flex-start;
+      margin-top: 2px;
+    }
+
+    /* ── Wrapper ── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 40px 24px 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── Section label ── */
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+      padding-left: 2px;
+    }
+
+    /* ── Intro text ── */
+    .intro {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--text);
+      margin-bottom: 40px;
+      border-left: 3px solid var(--sun);
+      padding-left: 16px;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .intro strong {
+      font-style: normal;
+      color: var(--orange);
+    }
+
+    /* ── Info cards ── */
+    .info-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 40px;
+      animation: fadeUp 0.7s 0.35s ease both;
+    }
+
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .info-icon {
+      font-size: 26px;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .info-body {}
+
+    .info-title {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .info-value {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .info-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* ── Map section ── */
+    .map-section {
+      margin-bottom: 40px;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+
+    .map-block {
+      margin-bottom: 20px;
+    }
+
+    .map-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .map-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .map-dot.festa    { background: var(--orange); }
+    .map-dot.parking  { background: var(--sun); }
+
+    .map-name {
+      font-weight: 500;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .map-frame {
+      width: 100%;
+      height: 200px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .map-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .map-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: transform 0.15s, opacity 0.2s;
+    }
+
+    .map-btn:hover { transform: translateY(-1px); opacity: 0.85; }
+
+    .map-btn.festa   { background: var(--orange); color: white; }
+    .map-btn.parking { background: var(--sun); color: var(--dark); }
+
+    /* ── Whiteboard ── */
+    .whiteboard {
+      margin-bottom: 40px;
+      animation: fadeUp 0.7s 0.5s ease both;
+    }
+
+    .wb-form {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .wb-form input,
+    .wb-form textarea {
+      width: 100%;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .wb-form input:focus,
+    .wb-form textarea:focus { border-color: var(--orange); }
+
+    .wb-form textarea { height: 90px; }
+
+    .wb-send {
+      width: 100%;
+      background: var(--orange);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 13px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .wb-send:hover  { opacity: 0.88; transform: translateY(-1px); }
+    .wb-send:active { transform: translateY(0); }
+    .wb-send:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+    .wb-messages { display: flex; flex-direction: column; gap: 12px; }
+
+    .wb-msg {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .wb-msg-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .wb-msg-name { font-weight: 500; font-size: 14px; color: var(--orange); }
+    .wb-msg-time { font-size: 11px; color: var(--muted); }
+    .wb-msg-text { font-size: 14px; line-height: 1.6; color: var(--text); }
+
+    .wb-empty {
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+      padding: 24px 0;
+      font-style: italic;
+    }
+
+    .wb-status {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 8px;
+      min-height: 18px;
+    }
+
+    /* ── PS ── */
+    .ps {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.8;
+      animation: fadeUp 0.7s 0.6s ease both;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 48px;
+      font-size: 11px;
+      color: var(--border);
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Meteo card ── */
+.meteo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.meteo-slot {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 6px;
+  text-align: center;
+}
+
+.meteo-slot-hour {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.meteo-slot-icon { font-size: 22px; line-height: 1; margin-bottom: 4px; }
+
+.meteo-slot-temp {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.meteo-slot-rain {
+  font-size: 10px;
+  color: #5b8dd9;
+  margin-top: 2px;
+}
+
+.meteo-loading {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  padding: 8px 0;
+}
+
+.meteo-summary {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 10px;
+  text-align: center;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <div class="hero" id="hero">
+    <div class="hero-age">30</div>
+    <div class="hero-label">Finalmente.</div>
+    <div class="hero-name">18 Aprile 2026</div>
+  </div>
+
+  <!-- Countdown -->
+  <div class="countdown-wrap">
+    <div class="countdown-label">Manca poco</div>
+    <div class="countdown-numbers">
+      <div class="cd-unit"><span class="cd-num" id="cd-d">00</span><span class="cd-lbl">giorni</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">ore</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">min</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">sec</span></div>
+    </div>
+  </div>
+
+  <div class="wrapper">
+
+    <!-- Intro -->
+    <p class="intro">
+      Ebbene sì, l'ultima volta che ho festeggiato un compleanno ufficialmente avevo 12 anni e probabilmente giocavo ancora a Pokémon. Dopo quasi un ventennio di silenzio, continuo a giocare a Pokémon — ma per i miei <strong>30 anni</strong> ho deciso di fare le cose in grande.
+    </p>
+
+    <!-- Info cards -->
+    <div class="section-label">Tutto quello che ti serve sapere</div>
+    <div class="info-grid">
+
+      <div class="info-card">
+        <div class="info-icon">🗓</div>
+        <div class="info-body">
+          <div class="info-title">Quando</div>
+          <div class="info-value">Sabato 18 Aprile</div>
+          <div class="info-sub">Il mio compleanno è il 14, ma sono sicuro che te lo ricordavi.</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">🕛</div>
+        <div class="info-body">
+          <div class="info-title">A che ora</div>
+          <div class="info-value">Dalle 12:00 alle 19:00 circa</div>
+          <div class="info-sub">Il circa vale soprattutto per le 19:00.</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">📍</div>
+        <div class="info-body">
+          <div class="info-title">Dove</div>
+          <div class="info-value">Campo a San Floriano</div>
+          <div class="info-sub">Dove mio padre ha organizzato la galzega, se c'eri.</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">🥘</div>
+        <div class="info-body">
+          <div class="info-title">Cosa</div>
+          <div class="info-value">Paella, sangria, birra e compagnia</div>
+          <div class="info-sub">Bei ricordi dei tempi spagnoli.</div>
+        </div>
+      </div>
+
+      <div class="info-card" id="meteo-card">
+        <div class="info-icon">🌤</div>
+        <div class="info-body" style="width:100%">
+          <div class="info-title">Meteo</div>
+          <div id="meteo-content"><div class="meteo-loading">Caricamento previsioni…</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Maps -->
+    <div class="section-label">Come arrivare</div>
+    <div class="map-section">
+
+      <!-- Festa -->
+      <div class="map-block">
+        <div class="map-label">
+          <div class="map-dot festa"></div>
+          <span class="map-name">🎉 Il campo — dove si festeggia</span>
+        </div>
+        <div class="map-frame">
+          <iframe
+            src="https://www.google.com/maps?q=45.51539,10.900153&z=17&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Campo festa"
+          ></iframe>
+        </div>
+        <a class="map-btn festa" href="https://maps.app.goo.gl/FK2DTY9W4hz8bcdTA" target="_blank" rel="noopener">
+          📍 Apri in Google Maps
+        </a>
+      </div>
+
+      <!-- Parcheggio -->
+      <div class="map-block">
+        <div class="map-label">
+          <div class="map-dot parking"></div>
+          <span class="map-name">🅿️ Parcheggio — lascia qui la macchina</span>
+        </div>
+        <div class="map-frame">
+          <iframe
+            src="https://www.google.com/maps?q=45.518490,10.906905&z=17&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Parcheggio Migross"
+          ></iframe>
+        </div>
+        <a class="map-btn parking" href="https://maps.app.goo.gl/kctroXy19phFL2oN9" target="_blank" rel="noopener">
+          🅿️ Apri in Google Maps
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Whiteboard -->
+    <div class="section-label">La lavagna (lascia un messaggio) 📝</div>
+    <div class="whiteboard">
+      <div class="wb-form">
+        <input type="text" id="wb-nome" placeholder="Il tuo nome" maxlength="50" />
+        <textarea id="wb-testo" placeholder="Lascia un messaggio…" maxlength="400"></textarea>
+        <button class="wb-send" id="wb-btn" onclick="inviaMessaggio()">Invia messaggio ✉️</button>
+        <div class="wb-status" id="wb-status"></div>
+      </div>
+      <div class="wb-messages" id="wb-messages">
+        <div class="wb-empty">Caricamento messaggi…</div>
+      </div>
+    </div>
+
+    <!-- PS -->
+    <p class="ps">
+      <em>P.S. Sì, questo sito è stato generato dall'AI (ma la paella sarà verissima!)</em><br>
+      <em>P.P.S. Anche il P.S. è stato generato dall'AI.</em><br>
+    </p>
+
+    <footer>© 2026 Lorenzo Zantedeschi · <a href="/" style="color:inherit;">lorenzozantedeschi.it</a></footer>
+
+  </div>
+
+  <script>
+    // ── Confetti ──
+    const hero = document.getElementById('hero');
+    const colors = ['#FFD600','#FF6B2B','#FDF6EC','#C0392B','#fff'];
+    for (let i = 0; i < 18; i++) {
+      const el = document.createElement('div');
+      el.className = 'confetti';
+      el.style.cssText = `
+        left: ${Math.random() * 100}%;
+        bottom: ${Math.random() * -20}px;
+        background: ${colors[Math.floor(Math.random() * colors.length)]};
+        width: ${4 + Math.random() * 7}px;
+        height: ${4 + Math.random() * 7}px;
+        animation-duration: ${4 + Math.random() * 6}s;
+        animation-delay: ${Math.random() * 4}s;
+      `;
+      hero.appendChild(el);
+    }
+
+    // ── Countdown to April 18 2026 12:00 ──
+    const target = new Date('2026-04-18T12:00:00');
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function tick() {
+      const now  = new Date();
+      const diff = target - now;
+
+      if (diff <= 0) {
+        document.querySelector('.countdown-wrap').innerHTML =
+          '<div style="font-family:Playfair Display,serif;font-size:22px;font-weight:900;">🎉 È stato un successo!</div>';
+        return;
+      }
+
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+
+      document.getElementById('cd-d').textContent = pad(d);
+      document.getElementById('cd-h').textContent = pad(h);
+      document.getElementById('cd-m').textContent = pad(m);
+      document.getElementById('cd-s').textContent = pad(s);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+
+    // ── Supabase whiteboard ──
+    const SUPA_URL = 'https://homoftqwekryndccohnv.supabase.co';
+    const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhvbW9mdHF3ZWtyeW5kY2NvaG52Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0OTEwMjEsImV4cCI6MjA5MTA2NzAyMX0.ZWGsBNAXGcdqispx5R_u1AkQx3ib2HY3_cSSEvqRaLM';
+
+    async function supaFetch(path, opts = {}) {
+      return fetch(SUPA_URL + '/rest/v1/' + path, {
+        headers: {
+          'apikey': SUPA_KEY,
+          'Authorization': 'Bearer ' + SUPA_KEY,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation',
+          ...opts.headers
+        },
+        ...opts
+      });
+    }
+
+    function formatTime(iso) {
+      const d = new Date(iso);
+      return d.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' }) +
+             ' · ' + d.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function renderMessages(msgs) {
+      const el = document.getElementById('wb-messages');
+      if (!msgs.length) {
+        el.innerHTML = '<div class="wb-empty">Ancora nessun messaggio — sii il primo! 🎉</div>';
+        return;
+      }
+      el.innerHTML = msgs.map(m => `
+        <div class="wb-msg">
+          <div class="wb-msg-header">
+            <span class="wb-msg-name">${escHtml(m.nome)}</span>
+            <span class="wb-msg-time">${formatTime(m.created_at)}</span>
+          </div>
+          <div class="wb-msg-text">${escHtml(m.testo)}</div>
+        </div>
+      `).join('');
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    async function caricaMessaggi() {
+      const res = await supaFetch('messaggi?select=*&order=created_at.desc');
+      if (res.ok) renderMessages(await res.json());
+    }
+
+    async function inviaMessaggio() {
+      const nome  = document.getElementById('wb-nome').value.trim();
+      const testo = document.getElementById('wb-testo').value.trim();
+      const btn   = document.getElementById('wb-btn');
+      const status = document.getElementById('wb-status');
+
+      if (!nome)  { status.textContent = 'Inserisci il tuo nome!'; return; }
+      if (!testo) { status.textContent = 'Scrivi qualcosa!'; return; }
+
+      btn.disabled = true;
+      btn.textContent = 'Invio…';
+      status.textContent = '';
+
+      const res = await supaFetch('messaggi', {
+        method: 'POST',
+        body: JSON.stringify({ nome, testo })
+      });
+
+      if (res.ok) {
+        document.getElementById('wb-nome').value  = '';
+        document.getElementById('wb-testo').value = '';
+        status.textContent = '✅ Messaggio inviato!';
+        await caricaMessaggi();
+      } else {
+        status.textContent = '❌ Errore, riprova.';
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Invia messaggio ✉️';
+    }
+
+    caricaMessaggi();
+    setInterval(caricaMessaggi, 30000); // aggiorna ogni 30s
+
+    // ── Meteo Open-Meteo ──
+const WMO_ICONS = {
+  0:'☀️', 1:'🌤', 2:'⛅', 3:'☁️',
+  45:'🌫', 48:'🌫',
+  51:'🌦', 53:'🌦', 55:'🌧',
+  61:'🌧', 63:'🌧', 65:'🌧',
+  71:'🌨', 73:'🌨', 75:'🌨',
+  80:'🌦', 81:'🌧', 82:'⛈',
+  95:'⛈', 96:'⛈', 99:'⛈'
+};
+
+async function caricaMeteo() {
+  try {
+    const url = 'https://api.open-meteo.com/v1/forecast' +
+      '?latitude=45.5154&longitude=10.9002' +
+      '&hourly=temperature_2m,precipitation_probability,weathercode' +
+      '&timezone=Europe%2FRome' +
+      '&start_date=2026-04-18&end_date=2026-04-18';
+
+    const res  = await fetch(url);
+    const data = await res.json();
+
+    const temps = data.hourly.temperature_2m;
+    const precs = data.hourly.precipitation_probability;
+    const codes = data.hourly.weathercode;
+
+    // Fascia 12–19
+    const fascia = [12, 13, 14, 15, 16, 17, 18, 19];
+
+    const tempMin = Math.round(Math.min(...fascia.map(i => temps[i])));
+    const tempMax = Math.round(Math.max(...fascia.map(i => temps[i])));
+    const rainMax = Math.max(...fascia.map(i => precs[i]));
+
+    // Codice meteo più frequente nella fascia
+    const codeFreq = {};
+    fascia.forEach(i => { codeFreq[codes[i]] = (codeFreq[codes[i]] || 0) + 1; });
+    const dominantCode = Object.entries(codeFreq).sort((a,b) => b[1]-a[1])[0][0];
+    const icon = WMO_ICONS[dominantCode] || '🌡';
+
+    document.getElementById('meteo-content').innerHTML = `
+      <div style="margin-top:8px;">
+        <div>
+          <div style="font-family:'Playfair Display',serif; font-weight:700; font-size:20px; color:var(--text);">
+            ${tempMin}°–${tempMax}°
+          </div>
+          <div style="font-size:12px; color:var(--muted); margin-top:3px;">
+            Probabilità pioggia ${rainMax}%.
+          </div>
+        </div>
+      </div>`;
+
+  } catch(e) {
+    document.getElementById('meteo-content').innerHTML =
+      '<div class="meteo-loading">Previsioni non disponibili al momento.</div>';
+  }
+}
+
+caricaMeteo();
+  </script>
+
+</body>
+</html>
