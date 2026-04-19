@@ -620,14 +620,8 @@
     </div>
 
     <!-- Whiteboard -->
-    <div class="section-label">La lavagna (lascia un messaggio) 📝</div>
+    <div class="section-label">La lavagna 📝</div>
     <div class="whiteboard">
-      <div class="wb-form">
-        <input type="text" id="wb-nome" placeholder="Il tuo nome" maxlength="50" />
-        <textarea id="wb-testo" placeholder="Lascia un messaggio…" maxlength="400"></textarea>
-        <button class="wb-send" id="wb-btn" onclick="inviaMessaggio()">Invia messaggio ✉️</button>
-        <div class="wb-status" id="wb-status"></div>
-      </div>
       <div class="wb-messages" id="wb-messages">
         <div class="wb-empty">Caricamento messaggi…</div>
       </div>
@@ -738,37 +732,6 @@
     async function caricaMessaggi() {
       const res = await supaFetch('messaggi?select=*&order=created_at.desc');
       if (res.ok) renderMessages(await res.json());
-    }
-
-    async function inviaMessaggio() {
-      const nome  = document.getElementById('wb-nome').value.trim();
-      const testo = document.getElementById('wb-testo').value.trim();
-      const btn   = document.getElementById('wb-btn');
-      const status = document.getElementById('wb-status');
-
-      if (!nome)  { status.textContent = 'Inserisci il tuo nome!'; return; }
-      if (!testo) { status.textContent = 'Scrivi qualcosa!'; return; }
-
-      btn.disabled = true;
-      btn.textContent = 'Invio…';
-      status.textContent = '';
-
-      const res = await supaFetch('messaggi', {
-        method: 'POST',
-        body: JSON.stringify({ nome, testo })
-      });
-
-      if (res.ok) {
-        document.getElementById('wb-nome').value  = '';
-        document.getElementById('wb-testo').value = '';
-        status.textContent = '✅ Messaggio inviato!';
-        await caricaMessaggi();
-      } else {
-        status.textContent = '❌ Errore, riprova.';
-      }
-
-      btn.disabled = false;
-      btn.textContent = 'Invia messaggio ✉️';
     }
 
     caricaMessaggi();
