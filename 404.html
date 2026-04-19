@@ -87,7 +87,7 @@
       width: 90px;
       height: 90px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #e8ff60, var(--lime) 50%, var(--lime-dim));
+      background: radial-gradient(circle at 35% 35%, #c8e800, #9bc900 50%, #7aaa00);
       position: relative;
       box-shadow: 0 0 0 3px rgba(200,255,0,0.3);
     }
@@ -195,6 +195,12 @@
     }
     @media (prefers-color-scheme: dark) {
   .code { color: var(--lime); }
+}
+    @media (prefers-color-scheme: dark) {
+  .ball {
+    background: radial-gradient(circle at 35% 35%, #e8ff60, #C8FF00 50%, #a8d600);
+    box-shadow: 0 0 0 3px rgba(200,255,0,0.3);
+  }
 }
   </style>
 </head>
